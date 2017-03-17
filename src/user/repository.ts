@@ -6,9 +6,9 @@ export class UserRepository {
 
 	public findById (id: string): UserModel {
 		const user: UserModel = {
-			id: '123',
+			id: id,
 			username: 'Simen',
-			password: 'someHashValue'
+			fbId: 'wtf'
 		};
 
 		return user;

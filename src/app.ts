@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
-import * as userRouter from './user';
+import * as UserFolder from './user';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -21,11 +21,14 @@ public express: express.Application;
 		this.express.use(logger('dev'));
 		this.express.use(bodyParser.json());
 		this.express.use(bodyParser.urlencoded({ extended: false }));
+		this.express.use((req, res, next) => {
+			req.data = {};
+		});
 	}
 
   // Configure API endpoints.
 	private routes(): void {
-		this.express.use('/', userRouter.initRouter());
+		this.express.use('/', UserFolder.default.route());
 	}
 }
 
