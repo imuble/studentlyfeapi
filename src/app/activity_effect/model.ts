@@ -13,9 +13,11 @@ export const ActivityEffectSchema = new mongoose.Schema({
     condition: {
         type: String,
         enum: ['SUCCESS', 'FAILURE', 'ALWAYS'],
-        default: 'ALWAYS'
+        default: 'ALWAYS',
+        required: true,
     },
-    attribute: mongoose.Schema.Types.ObjectId,
+    attribute: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute', required: true},
+    change: {type: Number, required: true},
 });
 
 const ActivityEffect = mongoose.model<IActivityEffect>('ActivityEffect', ActivityEffectSchema)
