@@ -1,11 +1,22 @@
 import * as jwt from "jsonwebtoken";
 import * as fs from 'fs';
 
-const privateKey = fs.readFileSync('../../config/private.pem');
+var path = require('path');
+var appDir = path.dirname(require.main.filename);
 
-export function signToken (req, res, next) {
+const privateKey = fs.readFileSync(appDir + '/../certs/jwt/private.pem');
 
-    let payload = req.data.tokenPayload;
+export default function signToken (req, res, next) {
+
+    let thisUser = req.data.thisUser;
+
+    if (!thisUser) {
+        //shit....
+    }
+
+    let payload = {
+        userId: thisUser._id
+    };
 
     if (!payload) {
         throw new Error();
@@ -16,8 +27,9 @@ export function signToken (req, res, next) {
             return res.status(500).send();
         }
 
-        req.data.signedToken = token;
-
+        req.data.signedTokens = {
+            accessToken: token
+        };
         next();
     })
 

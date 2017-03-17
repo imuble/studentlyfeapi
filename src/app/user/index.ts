@@ -1,4 +1,4 @@
-import {UserRepository} from './repository';
+import UserRepository from './repository';
 import UserRoute from './route'
 
 const UserFolder = {

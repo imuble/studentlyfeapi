@@ -4,6 +4,7 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
 import * as UserFolder from './user';
+import * as AuthenticationFolder from './authentication';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -23,12 +24,14 @@ public express: express.Application;
 		this.express.use(bodyParser.urlencoded({ extended: false }));
 		this.express.use((req, res, next) => {
 			req.data = {};
+			next();
 		});
 	}
 
   // Configure API endpoints.
 	private routes(): void {
 		this.express.use('/', UserFolder.default.route());
+		this.express.use('/', AuthenticationFolder.default.route());
 	}
 }
 

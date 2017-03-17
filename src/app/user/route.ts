@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { IUser, UserSchema } from './model';
-import {UserRepository} from './repository';
+import UserRepository from './repository';
 
 let userRepo = new UserRepository();
 
