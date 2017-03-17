@@ -4,7 +4,7 @@ import AttributeSchema from "../attribute/model";
 export interface IUser extends mongoose.Document {
 	name?: string,
 	fbId: string,
-	attributes?: [{key: mongoose.Schema.Types.ObjectId, value: number}],
+	attributes?: [{key: {type: mongoose.Schema.Types.ObjectId}, value: number}],
 };
 
 export const UserSchema = new mongoose.Schema({
