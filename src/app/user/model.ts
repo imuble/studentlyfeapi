@@ -10,7 +10,7 @@ export interface IUser extends mongoose.Document {
 export const UserSchema = new mongoose.Schema({
 	name: {type:String},
 	fbId: {type:String, required: true},
-	attributes: [{key: mongoose.Schema.Types.ObjectId, ref: 'Attribute', value: Number}]
+	attributes: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: Number}]
 });
 
 const User = mongoose.model<IUser>('User', UserSchema)
