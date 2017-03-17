@@ -8,8 +8,8 @@ export interface IActivity extends mongoose.Document {
 
 export const ActivitySchema = new mongoose.Schema({
     name: {type:String, required: true},
-    selfEffects: [{key: mongoose.schema.Types.ObjectId, ref: 'ActivityEffect'}],
-    targetEffects: [{key: mongoose.schema.Types.ObjectId, ref: 'ActivityEffect'}]
+    selfEffects: [{key: {type: mongoose.schema.Types.ObjectId, ref: 'ActivityEffect'}}],
+    targetEffects: [{key: {type: mongoose.schema.Types.ObjectId, ref: 'ActivityEffect'}}]
 });
 
 
