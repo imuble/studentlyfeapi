@@ -7,7 +7,7 @@ import dbConfig from './config/mysql_config';
 const connection = mysql.createConnection(dbConfig);
 
 connection.connect( (err) => {
-	console.log(err);
+	if (err) console.log(err);
 });
 
 let port = 8080;
