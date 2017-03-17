@@ -2,20 +2,12 @@ import app from './app';
 
 import * as mysql from 'mysql';
 
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'simo',
-  password : 'simo',
-  database : 'studentlyfedb'
-});
+import dbConfig from './config/mysql_config';
 
-connection.connect(function(err) {
-  if (err) {
-    console.error(err.stack);
-    return;
-  }
+const connection = mysql.createConnection(dbConfig);
 
-  console.log('connected as id ' + connection.threadId);
+connection.connect( (err) => {
+	console.log(err);
 });
 
 let port = 8080;
