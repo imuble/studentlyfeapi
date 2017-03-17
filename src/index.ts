@@ -1,12 +1,9 @@
 import app from './app';
 
-import * as mysql from 'mysql';
+import * as mongoose from 'mongoose';
+import mongodbConfig from './config/mongodb_config';
 
-import dbConfig from './config/mysql_config';
-
-const connection = mysql.createConnection(dbConfig);
-
-connection.connect( (err) => {
+mongoose.connect(mongodbConfig.url ,(err) => {
 	console.log(err);
 });
 

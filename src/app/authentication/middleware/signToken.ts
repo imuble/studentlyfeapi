@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import * as fs from 'fs';
 
-const privateKey = fs.readFileSync('private.pem');
+const privateKey = fs.readFileSync('../../config/private.pem');
 
 export function signToken (req, res, next) {
 

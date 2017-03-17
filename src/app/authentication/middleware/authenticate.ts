@@ -1,10 +1,9 @@
 import * as jwt from "jsonwebtoken";
 import * as fs from 'fs';
 
-const publicKey = fs.readFileSync('./public.pem');
+const publicKey = fs.readFileSync('../../config/public.pem');
 
 export function authenticate(req: any, res: any, next: any) {
-
     let token = req.get('Authorization');
     
     if (!token) {
