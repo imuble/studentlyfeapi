@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {UserModel} from './model';
+import { IUser, UserSchema } from './model';
 import {UserRepository} from './repository';
 
 let userRepo = new UserRepository();
@@ -15,9 +15,9 @@ export default function initRouter(): any {
 			return res.status()
 		}
 
-		let user: UserModel = userRepo.findById(userId);
+		//let user: UserSchema = userRepo.findById(userId);
 
-		return res.status(200).json(user);
+		return res.status(200);
 	});
 
 	return router;

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+import mongoose = require('mongoose');
 
 export interface IUser extends mongoose.Document {
 	name: string,
@@ -10,4 +10,5 @@ export const UserSchema = new mongoose.Schema({
 	fbId: {type:String, required: true},
 });
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model<IUser>('User', UserSchema)
+export default User;
