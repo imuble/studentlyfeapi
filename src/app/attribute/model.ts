@@ -10,5 +10,5 @@ export const AttributeSchema = new mongoose.Schema({
     suffix: {type:String},
 });
 
-const Attribute = mongoose.model<IAttribute>('IAttribute', AttributeSchema);
+const Attribute = mongoose.model<IAttribute>('Attribute', AttributeSchema);
 export default Attribute;
