@@ -5,11 +5,8 @@ import * as bodyParser from 'body-parser';
 
 import * as UserFolder from './user';
 import * as AuthenticationFolder from './authentication';
-<<<<<<< HEAD
 import * as ActivityFolder from './activity'
-=======
 import AttributeFolder from './attribute';
->>>>>>> cabd6d1f87c4b25f9a91285cb88453b3c4cac73b
 
 // Creates and configures an ExpressJS web server.
 class App {
