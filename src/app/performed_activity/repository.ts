@@ -13,8 +13,7 @@ export default class AttributeRepository {
 	 */
     public static findAllPerformedActiviesForUser(userId: string, completion: Function): void {
         UserRepository.findByIdAndPopulate(userId, {
-            path: 'performedActivities',
-            select: '-_id'
+            path: 'performedActivities'
         }, (err, user) => {
             completion(err, user.performedActivities);
         });

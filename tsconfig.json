@@ -2,8 +2,11 @@
     "compilerOptions": {
         "target": "es5",
         "rootDir": "src",
-        "typeRoots": [
-            "node_modules/@types"
+        "lib": [
+            "es6"
+        ],
+        "types": [
+            "node","core-js"
         ]
     }
 }

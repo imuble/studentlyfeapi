@@ -1,8 +1,8 @@
 import * as express from 'express';
 import { IActivity, ActivitySchema } from './model';
 import ActivityRepository from './repository';
-import authenticate from '../authentication/middleware/authenticate'
-
+import authenticate from '../authentication/middleware/authenticate';
+import * as performedActivityMiddleware from '../performed_activity/middleware';
 import * as middleware from './middleware/index';
 
 export default function initRouter(): any {
@@ -17,6 +17,14 @@ export default function initRouter(): any {
         authenticate,
         middleware.createActivityIfAdmin,
         middleware.returnSuccessWithCreatedActivity
+    );
+
+    router.post('/activities/:activityId/invoke',
+    authenticate,
+    performedActivityMiddleware.findAllPerformedActivitiesForUser,
+    middleware.checkIfActivityIsOnCooldown,
+    middleware.performActivityForUser,
+    middleware.returnSuccessResponse
     );
 
 

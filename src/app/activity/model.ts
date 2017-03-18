@@ -2,17 +2,19 @@ import mongoose = require('mongoose');
 
 export interface IActivity extends mongoose.Document {
     name: string,
-    selfEffects?: [{key: {type:  string}}],
-    targetEffects?: [{key: {type: string}}],
-    successFactors?: [{key: {type: string}, value: Number}],
+    selfEffects?: [{activityEffect: {type:  string}}],
+    targetEffects?: [{activityEffect: {type: string}}],
+    successFactors?: [{attribute: {type: string}, value: Number}],
+    cooldown: Number,
     imageUrl?: string,
 };
 
 export const ActivitySchema = new mongoose.Schema({
     name: {type:String, required: true},
-    selfEffects: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
-    targetEffects: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
-    successFactors: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: Number}],
+    selfEffects: [{activityEffect: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
+    targetEffects: [{activityEffect: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
+    successFactors: [{attribute: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: Number}],
+    cooldown: {type: Number, required: true},
     imageUrl: {type:String}
 });
 
