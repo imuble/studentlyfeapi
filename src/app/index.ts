@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser';
 import * as UserFolder from './user';
 import * as AuthenticationFolder from './authentication';
 import * as ActivityFolder from './activity'
+import * as ActivityEffectFolder from './activity_effect'
 import AttributeFolder from './attribute';
 import PerformedActivitiesRoute from './performed_activity/route';
 
@@ -38,6 +39,7 @@ public express: express.Application;
 		this.express.use('/', ActivityFolder.default.route());
 		this.express.use('/', AttributeFolder.route());
 		this.express.use('/', PerformedActivitiesRoute());
+		this.express.use('/', ActivityEffectFolder.default.route());
 	}
 }
 

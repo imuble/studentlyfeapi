@@ -5,7 +5,7 @@ export interface IActivity extends mongoose.Document {
     selfEffects?: [{key: {type:  string}}],
     targetEffects?: [{key: {type: string}}],
     successFactors?: [{key: {type: string}, value: Number}],
-    image?: string,
+    imageUrl?: string,
 };
 
 export const ActivitySchema = new mongoose.Schema({
