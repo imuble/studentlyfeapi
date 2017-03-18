@@ -1,34 +1,54 @@
 import UserRepository from '../user/repository';
 import { IUser } from '../user/model';
+import { IAttribute } from './model';
+import Attribute from './model';
 
 export default class AttributeRepository {
 	constructor() {
 	}
 
-	/**
-	 * Finds a specified user
-	 * @param {string} id - id of the user
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
+    /**
+	 * Finds all attributes
+	 * @param {Function} completion - Function that will execute after the query, called completion(err, attributes)
 	 */
-	public static findById(id: string, completion: Function): void {
-	
-	}
+    public static findAll(completion: Function): void {
+        Attribute.find({}).exec()
+        .then( (attributes) => {
+            return completion(null, attributes);
+        })
+        .catch( (err) => {
+            return completion(err);
+        });
+    }
 
 	/**
 	 * Finds a specified user
-	 * @param {string} id - id of the user
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
+	 * @param {string} userId - id of user requesting to create a new attribute
+     * @param {IAttribute} attribute - attribute to be created
+	 * @param {Function} completion - Function that will execute after the query, called completion(err, attribute)
 	 */
-	public static findByFbId(fbId: string, completion: Function): void {
-		
-	}
+	public static create(userId: string, attribute: IAttribute, completion: Function): void {
 
-	/**
-	 * Finds a specified user
-	 * @param {IUser} user - user object to save
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
-	 */
-	public static create(user: IUser, completion: Function): void {
-		
+        //Checks if the user has permission to create attribute
+		UserRepository.findById(userId, (err, user) => {
+            
+            if (err) {
+                return completion(err);
+            }
+
+            if (!user || !user.isAdmin) {
+                return completion(true);
+            }
+            
+            let newAttribute = new Attribute(attribute);
+            newAttribute.save()
+            .then( (attr) => {
+                return completion(null, attr);
+            })
+            .catch( (err) => {
+                return completion(err);
+            });
+
+        })
 	}
 }

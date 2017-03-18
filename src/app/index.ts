@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 
 import * as UserFolder from './user';
 import * as AuthenticationFolder from './authentication';
+import AttributeFolder from './attribute';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -32,6 +33,7 @@ public express: express.Application;
 	private routes(): void {
 		this.express.use('/', UserFolder.default.route());
 		this.express.use('/', AuthenticationFolder.default.route());
+		this.express.use('/', AttributeFolder.route());
 	}
 }
 
