@@ -10,7 +10,7 @@ export default class UserRepository {
 	 * @param {string} id - id of the user
 	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
 	 */
-	public findById(id: string, completion: Function): void {
+	public static findById(id: string, completion: Function): void {
 		User.findById(id).exec()
 			.then((user) => {
 				completion(null, user);
@@ -25,7 +25,7 @@ export default class UserRepository {
 	 * @param {string} id - id of the user
 	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
 	 */
-	public findByFbId(fbId: string, completion: Function): void {
+	public static findByFbId(fbId: string, completion: Function): void {
 		User.findOne({fbId: fbId}).exec()
 			.then((user) => {
 				completion(null, user);
@@ -40,7 +40,7 @@ export default class UserRepository {
 	 * @param {IUser} user - user object to save
 	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
 	 */
-	public create(user: IUser, completion: Function): void {
+	public static create(user: IUser, completion: Function): void {
 		let newUser = new User(user);
 		newUser.save()
 			.then((savedUser) => {

@@ -3,7 +3,6 @@ import * as https from 'https';
 import { IUser } from '../../user/model';
 
 import UserRepository from '../../user/repository';
-const userRepo = new UserRepository();
 
 export function validateInput(req, res, next) {
 
@@ -21,7 +20,7 @@ export function fetchUserFromFacebook(req, res, next) {
 
     getFbIdByToken(fbToken, (data) => {
 
-        userRepo.findByFbId(data.id, (err, user) => {
+        UserRepository.findByFbId(data.id, (err, user) => {
 
             //this might mean that the data.id (fbId) is invalid format
             if (err) {
@@ -39,7 +38,7 @@ export function fetchUserFromFacebook(req, res, next) {
                 let newUser: IUser = {
                     fbId: data.id
                 };
-                userRepo.create(newUser, (err, user) => {
+                UserRepository.create(newUser, (err, user) => {
                     if (err) {
                         console.log(err);
                         return res.status(500).send();
