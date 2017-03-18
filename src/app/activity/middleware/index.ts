@@ -1,4 +1,5 @@
 import ActivityRepository from '../repository'
+import UserRepository from '../../user/repository'
 import {IActivity, ActivitySchema} from '../model'
 
 
@@ -18,17 +19,24 @@ export function returnSuccessWithActivities(req, res, next) {
     return res.status(200).json({activities: activities});
 }
 
-export function createActivity(req, res, next) {
+export function createActivityIfAdmin(req, res, next) {
     let userId = req.data.decodedToken.userId;
-    let activity = req.body.activity;
-    ActivityRepository.create(activity, userId, (err, activity) => {
+
+    UserRepository.findById(userId, (err, user) => {
         if (err) return res.status(500).send();
-        else {
-            req.data.activity = activity;
-            return next();
-        }
+        if (!user || !user.isAdmin) return res.status(401).send();
+        let activity = req.body.activity;
+        ActivityRepository.create(activity, userId, (err, activity) => {
+            if (err) return res.status(500).send();
+            else {
+                req.data.activity = activity;
+                return next();
+            }
+        });
     });
+
 }
+
 
 export function returnSuccessWithCreatedActivity(req, res, next) {
     return res.status(200).json({activity: req.data.activity})

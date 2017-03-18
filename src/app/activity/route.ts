@@ -15,7 +15,7 @@ export default function initRouter(): any {
 
     router.post('/activities',
         authenticate,
-        middleware.createActivity,
+        middleware.createActivityIfAdmin,
         middleware.returnSuccessWithCreatedActivity
     );
 
