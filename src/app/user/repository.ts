@@ -41,9 +41,7 @@ export default class UserRepository {
 	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
 	 */
 	public create(user: IUser, completion: Function): void {
-		console.log(user);
 		let newUser = new User(user);
-		console.log(newUser);
 		newUser.save()
 			.then((savedUser) => {
 				completion(null, savedUser);

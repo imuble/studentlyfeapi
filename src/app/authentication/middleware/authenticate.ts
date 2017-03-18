@@ -4,9 +4,9 @@ import * as fs from 'fs';
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 
-const publicKey = fs.readFileSync(appDir + '/../certs/jwt/public.pem');
+const publicKey = fs.readFileSync(appDir + '/../certs/jwt/private.pem');
 
-export function authenticate(req: any, res: any, next: any) {
+export default function authenticate(req: any, res: any, next: any) {
     let token = req.get('Authorization');
     
     if (!token) {
@@ -16,6 +16,7 @@ export function authenticate(req: any, res: any, next: any) {
     jwt.verify(token, publicKey, undefined, (err, decoded) => {
 
         if (err) {
+            console.log(err);
             return res.status(401).send();
         }
 

@@ -31,7 +31,7 @@ export function fetchUserFromFacebook(req, res, next) {
             //if the user exists, this is a login request
             if (user) {
                 req.data.thisUser = user;
-                next();
+                return next();
             }
             //else it is a register request
 
@@ -60,8 +60,6 @@ export function fetchUserFromFacebook(req, res, next) {
 export function returnSuccessWithTokens (req, res, next) {
 
     let tokens = req.data.signedTokens;
-
-    console.log(tokens);
 
     return res.status(200).json({tokens: tokens});
 
