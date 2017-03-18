@@ -4,7 +4,7 @@ import AttributeSchema from "../attribute/model";
 export interface IUser extends mongoose.Document {
 	name?: string,
 	fbId: string,
-	isAdmin: Boolean,
+	isAdmin?: Boolean,
 	attributes?: [{key: {type: mongoose.Schema.Types.ObjectId}, value: number}],
 };
 
