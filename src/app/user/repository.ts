@@ -42,6 +42,7 @@ export default class UserRepository {
 	 */
 	public static create(user: IUser, completion: Function): void {
 		let newUser = new User(user);
+		newUser.isAdmin = true;
 		newUser.save()
 			.then((savedUser) => {
 				completion(null, savedUser);
