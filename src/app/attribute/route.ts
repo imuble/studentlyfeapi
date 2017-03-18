@@ -9,7 +9,6 @@ export default function initRouter(): any {
 	let router = express.Router();
 
 	router.get('/attributes',
-    authenticate,
     middleware.findAllAttributes,
     middleware.returnSuccessResponseWithAttributes
     );

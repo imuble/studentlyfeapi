@@ -11,6 +11,7 @@ export default function initRouter(): any {
 	router.get('/me/performedActivities',
     authenticate,
     middleware.findAllPerformedActivitiesForUser,
+    middleware.cleanPerformedActivities,
     middleware.returnSuccessResponseWithPerformedActivities
     );
 

@@ -1,6 +1,7 @@
 import ActivityRepository from '../repository'
 import UserRepository from '../../user/repository'
 import {IActivity, ActivitySchema} from '../model'
+import { IPerformedActivity } from '../../performed_activity/model';
 
 
 export function findAllActivities(req, res, next) {
@@ -42,5 +43,56 @@ export function returnSuccessWithCreatedActivity(req, res, next) {
     return res.status(200).json({activity: req.data.activity})
 }
 
+/* perform activity */
+export function checkIfActivityIsOnCooldown (req, res, next) {
+    let performedActivities = req.data.performedActivities;
+    let activityId = req.params.activityId;
 
+    let isOnCooldown = false;
+
+    for (let index = 0; index < performedActivities.length; index++) {
+        let performedActivity = performedActivities[index];
+        let activityStringValue = new String(performedActivity.activity).valueOf();
+
+        if (activityStringValue === activityId) {
+            let now = new Date().getTime();
+            let readyAt = performedActivity.readyAt.getTime();
+            if (now < readyAt) {
+                isOnCooldown = true;
+                break;
+            }
+        }
+    }
+
+    if (isOnCooldown) {
+        return res.status(412).json("The activity is on cooldown");
+    }
+
+    next();
+
+}
+
+export function performActivityForUser (req, res, next) {
+    let activityId = req.params.activityId;
+    let userId = req.data.decodedToken.userId;
+
+    ActivityRepository.findById(activityId, (err, activity) => {
+        let performedActivity: IPerformedActivity = {
+            activity: activity._id,
+            readyAt: new Date().getTime() + activity.cooldown
+        };
+
+        UserRepository.pushPerformedActivity(userId, performedActivity, (err) => {
+            if (err) {
+                return res.status(500).send();
+            }
+            return next();
+        });
+    });
+}
+/* perform activity end */
+
+export function returnSuccessResponse (req, res, next) {
+    return res.status(200).send();
+}
 
