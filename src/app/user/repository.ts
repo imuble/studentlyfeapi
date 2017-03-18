@@ -5,50 +5,50 @@ export default class UserRepository {
 	constructor() {
 	}
 
-	/**
-	 * Finds a specified user
-	 * @param {string} id - id of the user
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
-	 */
-	public static findById(id: string, completion: Function): void {
-		User.findById(id).exec()
-			.then((user) => {
-				completion(null, user);
-			})
-			.catch((err) => {
-				completion(err);
-			});
+	private static defaultPopulateQuery = {
+		path: 'performedActivities attributes.key',
+		select: '-__v -_id'
 	}
 
 	/**
 	 * Finds a specified user
 	 * @param {string} id - id of the user
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
+	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
 	 */
-	public static findByFbId(fbId: string, completion: Function): void {
-		User.findOne({fbId: fbId}).exec()
-			.then((user) => {
-				completion(null, user);
-			})
-			.catch((err) => {
-				completion(err);
-			});
+	public static findById(id: string, completion?: Function): void {
+		return User.findById(id).exec(completion);
+	}
+
+	/**
+	 * Finds a specified user
+	 * @param {string} id - id of the user
+	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
+	 */
+	public static findByIdAndPopulate(id: string, populateQuery: any, completion?: Function): void {
+		let query = populateQuery;
+		if (!populateQuery) {
+			query = UserRepository.defaultPopulateQuery;
+		}
+		return User.findById(id).populate(query).exec(completion);
+	}
+
+	/**
+	 * Finds a specified user
+	 * @param {string} id - id of the user
+	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
+	 */
+	public static findByFbId(fbId: string, completion?: Function): void {
+		return User.findOne({fbId: fbId}).exec(completion);
 	}
 
 	/**
 	 * Finds a specified user
 	 * @param {IUser} user - user object to save
-	 * @param {Function} completion - Function that will execute after the query, called completion(err, user)
+	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
 	 */
-	public static create(user: IUser, completion: Function): void {
+	public static create(user: IUser, completion?: Function): void {
 		let newUser = new User(user);
 		newUser.isAdmin = true;
-		newUser.save()
-			.then((savedUser) => {
-				completion(null, savedUser);
-			})
-			.catch((err) => {
-				completion(err);
-			});
+		return newUser.save(completion);
 	}
 }

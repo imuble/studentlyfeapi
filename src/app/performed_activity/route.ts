@@ -8,16 +8,11 @@ import {IAttribute} from '../attribute/model';
 export default function initRouter(): any {
 	let router = express.Router();
 
-	router.get('/attributes',
+	router.get('/me/performedActivities',
     authenticate,
-    middleware.findAllAttributes,
-    middleware.returnSuccessResponseWithAttributes
+    middleware.findAllPerformedActivitiesForUser,
+    middleware.returnSuccessResponseWithPerformedActivities
     );
-
-    router.post('/attributes',
-    authenticate,
-    middleware.createAttribute,
-    middleware.returnSuccessResponseWithAttribute);
 
 	return router;
 }

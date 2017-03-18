@@ -19,8 +19,9 @@ export function returnSuccessResponseWithAttributes(req, res, next) {
 
 }
 
-export function returnSuccessResponse (req, res, next) {
-    return res.status(200).send();
+export function returnSuccessResponseWithAttribute (req, res, next) {
+    let attribute = req.data.attribute;
+    return res.status(200).json({attribute: attribute});
 }
 
 export function createAttribute(req, res, next) {
@@ -35,6 +36,7 @@ export function createAttribute(req, res, next) {
             console.log(err);
             return res.status(500).send();
         }
+        req.data.attribute = attribute;
         return next();
     });
 }
