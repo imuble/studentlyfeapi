@@ -5,16 +5,18 @@ export interface IUser extends mongoose.Document {
 	name?: string,
 	fbId: string,
 	isAdmin?: Boolean,
-	attributes?: [{key: {type: mongoose.Schema.Types.ObjectId}, value: number}],
-	performedActivities?: [{type: mongoose.Schema.Types.ObjectId}] 
+	attributes?: [{name: String, value: number}],
+	performedActivities?: [{type: mongoose.Schema.Types.ObjectId}],
+	imageUrl?: string
 };
 
 export const UserSchema = new mongoose.Schema({
 	name: {type:String},
 	fbId: {type:String, required: true},
 	isAdmin: {type:Boolean, default:false},
-	attributes: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: Number}],
-	performedActivities: [{type: mongoose.Schema.Types.ObjectId, ref: "PerformedActivity"}] 
+	attributes: [{name: {type: String}, value: {type: Number}}],
+	performedActivities: [{type: mongoose.Schema.Types.ObjectId, ref: "PerformedActivity"}],
+	imageUrl: {type: String}
 });
 
 const User = mongoose.model<IUser>('User', UserSchema)
