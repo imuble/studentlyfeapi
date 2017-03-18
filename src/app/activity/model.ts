@@ -13,7 +13,7 @@ export const ActivitySchema = new mongoose.Schema({
     selfEffects: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
     targetEffects: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEffect'}}],
     successFactors: [{key: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: Number}],
-    image: {type:String}
+    imageUrl: {type:String}
 });
 
 
