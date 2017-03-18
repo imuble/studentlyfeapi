@@ -3,13 +3,15 @@ import mongoose = require('mongoose');
 export interface IAttribute extends mongoose.Document {
     key: string,
     suffix?: string,
-    description: string
+    description: string,
+    defaultValue?: Number
 };
 
 export const AttributeSchema = new mongoose.Schema({
     key: {type:String, required: true},
     description: {type: String, required: true},
-    suffix: {type:String}
+    suffix: {type:String},
+    defaultValue: {type: Number, default: 0}
 });
 
 const Attribute = mongoose.model<IAttribute>('Attribute', AttributeSchema);
