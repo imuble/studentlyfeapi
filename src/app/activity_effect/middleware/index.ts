@@ -4,11 +4,11 @@ import {IActivityEffect, ActivityEffectSchema} from '../model'
 
 
 export function findAllActivityEffects(req, res, next) {
-    ActivityEffectRepository.findAll((err, activities) => {
+    ActivityEffectRepository.findAll((err, activityEffects) => {
         if (err) return res.status(500).send();
-        if (!activities) return res.status(404).send();
+        if (!activityEffects) return res.status(404).send();
         else  {
-            req.data.activities = activities;
+            req.data.activityEffects = activityEffects;
             next(null);
         }
     });
