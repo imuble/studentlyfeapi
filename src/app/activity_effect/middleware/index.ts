@@ -19,7 +19,7 @@ export function returnSuccessWithActivityEffects(req, res, next) {
     return res.status(200).json({activityEffects: activityEffects});
 }
 
-export function createActivityIfAdmin(req, res, next) {
+export function createActivityEffectIfAdmin(req, res, next) {
     let userId = req.data.decodedToken.userId;
 
     UserRepository.findById(userId, (err, user) => {
