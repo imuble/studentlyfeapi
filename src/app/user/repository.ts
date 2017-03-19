@@ -101,7 +101,7 @@ export default class UserRepository {
 		return newUser.save(completion);
 	}
 
-	private static isAdminAsync(userId: string, completion: Function) {
+	public static isAdminAsync(userId: string, completion: Function) {
 		UserRepository.findById(userId, (err, user) => {
 
 			if (err) {
