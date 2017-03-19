@@ -20,24 +20,21 @@ export default class UserRepository {
 	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
 	 */
 	public static doChangeOnAttributeForUser(userId: string, attribute: string, value: number, completion: Function) {
-		console.log(userId);
-		console.log(attribute);
-		console.log(value);
-		User.update({'_id': userId, 'attributes.attribute': attribute}, {$inc: {'attributes.$.value': value}})
-		.exec(completion)
+		User.update({ '_id': userId, 'attributes.attribute': attribute }, { $inc: { 'attributes.$.value': value } })
+			.exec(completion)
 	}
 
-	public static addAttributeToAllUsers (attributeId: string, defaultValue: number = 0, completion: Function) {
-		User.update({}, {$push: { attributes: {attribute: attributeId, value: defaultValue}}}, {multi: true}).exec(completion);
+	public static addAttributeToAllUsers(attributeId: string, defaultValue: number = 0, completion: Function) {
+		User.update({}, { $push: { attributes: { attribute: attributeId, value: defaultValue } } }, { multi: true }).exec(completion);
 	}
 
-	public static pushPerformedActivity (userId: string, performedActivity: IPerformedActivity, completion: Function): void {
+	public static pushPerformedActivity(userId: string, performedActivity: IPerformedActivity, completion: Function): void {
 		let newPerformedActivity = new PerformedActivity(performedActivity);
-		newPerformedActivity.save( (err, savedPerformedActivity) => {
+		newPerformedActivity.save((err, savedPerformedActivity) => {
 			if (err) {
 				return completion(err);
 			}
-			User.findByIdAndUpdate(userId, {$addToSet: {performedActivities: savedPerformedActivity._id}}).exec( () => {
+			User.findByIdAndUpdate(userId, { $addToSet: { performedActivities: savedPerformedActivity._id } }).exec(() => {
 				if (err) {
 					return completion(err);
 				}
@@ -47,12 +44,12 @@ export default class UserRepository {
 		});
 	}
 
-    public static removePerformedActivity(userId: string, performedActivityId: string, completion: Function): void {
-		PerformedActivity.findByIdAndRemove(performedActivityId).exec( (err) => {
+	public static removePerformedActivity(userId: string, performedActivityId: string, completion: Function): void {
+		PerformedActivity.findByIdAndRemove(performedActivityId).exec((err) => {
 			if (err) {
 				console.log(err);
 			}
-			User.findByIdAndUpdate(userId, {$pull: {performedActivities: performedActivityId}}, (err) => {
+			User.findByIdAndUpdate(userId, { $pull: { performedActivities: performedActivityId } }, (err) => {
 				if (err) {
 					console.log(err);
 					completion(err);
@@ -60,7 +57,7 @@ export default class UserRepository {
 				completion(null);
 			});
 		});
-    }
+	}
 
 	/**
 	 * Finds a specified user
@@ -90,7 +87,7 @@ export default class UserRepository {
 	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
 	 */
 	public static findByFbId(fbId: string, completion?: Function): void {
-		return User.findOne({fbId: fbId}).exec(completion);
+		return User.findOne({ fbId: fbId }).exec(completion);
 	}
 
 	/**
@@ -102,5 +99,20 @@ export default class UserRepository {
 		let newUser = new User(user);
 		newUser.isAdmin = true;
 		return newUser.save(completion);
+	}
+
+	public static isAdminAsync(userId: string, completion: Function) {
+		UserRepository.findById(userId, (err, user) => {
+
+			if (err) {
+				return completion(false);
+			}
+
+			if (!user || !user.isAdmin) {
+				return completion(false);
+			}
+
+			return completion(true);
+		});
 	}
 }
