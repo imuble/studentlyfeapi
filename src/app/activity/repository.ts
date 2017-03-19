@@ -72,25 +72,25 @@ export default class ActivityRepository {
 
     /**
      * Delete activity
-     * @param {IActivity} activity - activity object to save
+     * @param {IActivity} activity - activity object to delete
      * @param (userId) string - id of the user doing the create request
-     * @param {Function} completion - Function that will execute after the query, called completion(err, activity)
+     * @param {Function} completion - Function that will execute after the query, called completion(err, deletedActivity)
      */
-    public static deleteActivityById(id: string, userId: string, completion: Function): void {
+    public static deleteActivity(id: string, userId: string, completion: Function): void {
 
-        UserRepository.findById(userId, (err, user) => {
-            if(err) return completion(err, null);
-            if(!user) return completion("404");
-            if (user.isAdmin) {
-                Activity.findByIdAndRemove(id, (err, activity) => {
-                    if (err) completion("500");
-                    else if(!activity)  completion("404");
-                    else completion();
-                });
-            }
-            else {
-                return completion("401");
-            }
+        UserRepository.isAdminAsync(userId, (admin) => {
+            if(!admin) return completion("403");
+            Activity.findByIdAndRemove(id, (err, deletedActivity) => {
+                if (err) completion("500");
+                else if(!deletedActivity)  completion("404");
+                else {
+                    completion(null, deletedActivity);
+
+                }
+            });
+
         });
     }
 }
+
+
