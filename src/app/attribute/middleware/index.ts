@@ -37,8 +37,6 @@ export function createAttribute(req, res, next) {
             console.log(err);
             return res.status(500).send();
         }
-        console.log(attribute._id);
-        console.log(attribute.defaultValue);
         
         UserRepository.addAttributeToAllUsers(attribute._id, attribute.defaultValue, (err) => {
             if (err) {
