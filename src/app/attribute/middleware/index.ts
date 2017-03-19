@@ -16,7 +16,7 @@ export function findAllAttributes(req, res, next) {
 
 export function returnSuccessResponseWithAttributes(req, res, next) {
 
-    return res.status(200).json(req.data.attributes);
+    return res.status(200).json({attributes: req.data.attributes});
 
 }
 
