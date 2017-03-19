@@ -27,6 +27,12 @@ export default function initRouter(): any {
     middleware.returnSuccessResponse
     );
 
+    router.delete('/activities/:activityId',
+        authenticate,
+        middleware.deleteActivityById,
+        middleware.returnSuccessResponse
+    );
+
 
     return router;
 }

@@ -68,4 +68,29 @@ export default class ActivityRepository {
             }
         });
     }
+
+
+    /**
+     * Delete activity
+     * @param {IActivity} activity - activity object to save
+     * @param (userId) string - id of the user doing the create request
+     * @param {Function} completion - Function that will execute after the query, called completion(err, activity)
+     */
+    public static deleteActivityById(id: string, userId: string, completion: Function): void {
+
+        UserRepository.findById(userId, (err, user) => {
+            if(err) return completion(err, null);
+            if(!user) return completion("404");
+            if (user.isAdmin) {
+                Activity.findByIdAndRemove(id, (err, activity) => {
+                    if (err) completion("500");
+                    else if(!activity)  completion("404");
+                    else completion();
+                });
+            }
+            else {
+                return completion("401");
+            }
+        });
+    }
 }
