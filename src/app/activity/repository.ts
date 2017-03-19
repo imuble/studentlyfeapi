@@ -13,7 +13,9 @@ export default class ActivityRepository {
      * @param {Function} completion - Function that will execute after the query, called completion(err, activity)
      */
     public static findById(id: string, completion: Function): void {
-        Activity.findById(id).exec()
+        Activity.findById(id)
+            .populate('selfEffects.activityEffects targetEffects.activityEffects successFactors.attributes')
+            .exec()
             .then((activity) => {
                 completion(null, activity);
             })
@@ -29,7 +31,9 @@ export default class ActivityRepository {
      * @param {Function} completion - Function that will execute after the query, called completion(err, activity)
      */
     public static findAll(completion: Function): void {
-        Activity.find({}).exec()
+        Activity.find({})
+            .populate('selfEffects.activityEffects targetEffects.activityEffects successFactors.attributes')
+            .exec()
             .then((activities) => {
                 completion(null, activities);
             })

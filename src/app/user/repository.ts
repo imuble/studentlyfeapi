@@ -2,6 +2,7 @@ import User from './model';
 import PerformedActivity from '../performed_activity/model';
 import { IUser } from './model';
 import { IPerformedActivity } from '../performed_activity/model';
+import { IAttribute } from '../attribute/model';
 
 export default class UserRepository {
 	constructor() {
@@ -9,7 +10,25 @@ export default class UserRepository {
 
 	private static defaultPopulateQuery = {
 		path: 'performedActivities attributes.key',
-		select: '-__v -_id'
+		select: '-__v'
+	}
+
+	/**
+	 * Takes a query of increments/decrements on the user attributes.
+	 * @param {string} id - id of the user
+	 * @param {Array} changeList - list of changes: has {condition: string, change: number, attribute: string}
+	 * @param {Function} completion - (OPTIONAL) Function that will execute after the query, called completion(err, user)
+	 */
+	public static doChangeOnAttributeForUser(userId: string, attribute: string, value: number, completion: Function) {
+		console.log(userId);
+		console.log(attribute);
+		console.log(value);
+		User.update({'_id': userId, 'attributes.attribute': attribute}, {$inc: {'attributes.$.value': value}})
+		.exec(completion)
+	}
+
+	public static addAttributeToAllUsers (attributeId: string, defaultValue: number = 0, completion: Function) {
+		User.update({}, {$push: { attributes: {attribute: attributeId, value: defaultValue}}}, {multi: true}).exec(completion);
 	}
 
 	public static pushPerformedActivity (userId: string, performedActivity: IPerformedActivity, completion: Function): void {

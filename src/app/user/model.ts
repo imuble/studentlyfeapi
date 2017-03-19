@@ -14,7 +14,7 @@ export const UserSchema = new mongoose.Schema({
 	name: {type:String},
 	fbId: {type:String, required: true},
 	isAdmin: {type:Boolean, default:false},
-	attributes: [{name: {type: String}, value: {type: Number}}],
+	attributes: [{attribute: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: {type: Number}}],
 	performedActivities: [{type: mongoose.Schema.Types.ObjectId, ref: "PerformedActivity"}],
 	imageUrl: {type: String}
 });
