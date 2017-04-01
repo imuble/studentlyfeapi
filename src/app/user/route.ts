@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { IUser, UserSchema } from './model';
 import UserRepository from './repository';
-
+import authenticate from '../authentication/middleware/authenticate';
+import * as PutUserPushTokenMiddleware from './middleware/put_user_pushtoken';
 let userRepo = new UserRepository();
 
 export default function initRouter(): any {
@@ -19,6 +20,12 @@ export default function initRouter(): any {
 
 		return res.status(200);
 	});
+
+	router.put('/me/pushtoken',
+	authenticate,
+	PutUserPushTokenMiddleware.verifyPutUserPushTokenBody,
+	PutUserPushTokenMiddleware.setAuthenticatedUsersPushToken
+	);
 
 	return router;
 }

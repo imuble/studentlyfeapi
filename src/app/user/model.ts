@@ -5,7 +5,7 @@ export interface IUser extends mongoose.Document {
 	name?: string,
 	fbId: string,
 	isAdmin?: Boolean,
-	attributes?: [{name: String, value: number}],
+	attributes?: [{attribute: String, value: number}],
 	performedActivities?: [{type: mongoose.Schema.Types.ObjectId}],
 	imageUrl?: string
 };
@@ -13,6 +13,7 @@ export interface IUser extends mongoose.Document {
 export const UserSchema = new mongoose.Schema({
 	name: {type:String},
 	fbId: {type:String, required: true},
+	pushToken: {type: String},
 	isAdmin: {type:Boolean, default:false},
 	attributes: [{attribute: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: {type: Number}}],
 	performedActivities: [{type: mongoose.Schema.Types.ObjectId, ref: "PerformedActivity"}],

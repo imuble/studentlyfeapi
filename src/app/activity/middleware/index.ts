@@ -2,7 +2,7 @@ import ActivityRepository from '../repository'
 import UserRepository from '../../user/repository'
 import { IActivity, ActivitySchema } from '../model'
 import { IPerformedActivity } from '../../performed_activity/model';
-
+import * as PushNotifications from '../../../lib/push_notiication';
 
 export function findAllActivities(req, res, next) {
     ActivityRepository.findAll((err, activities) => {
@@ -12,6 +12,31 @@ export function findAllActivities(req, res, next) {
             req.data.activities = activities;
             next(null);
         }
+    });
+}
+
+export function sendNewActivityPushNotification (req, res, next) {
+
+    let activity = req.data.activity;
+    
+    let push: PushNotifications.PushNotification = {
+        payload: {
+            event: 'added',
+            entity: 'activity'
+        },
+        provider: 'gcm'
+    }
+    UserRepository.getAllPushTokens( (err, tokens) => {
+        if (err) {
+            return res.status(500).send("could not get pushtokens");
+        }
+        PushNotifications.sendPushNotification(tokens, push).then( (response) => {
+            console.log(response);
+            return next();
+        }).catch( (err) => {
+            console.log(err);
+            return res.status(500).send("could not send push");
+        });
     });
 }
 
