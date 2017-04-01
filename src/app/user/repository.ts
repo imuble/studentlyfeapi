@@ -9,7 +9,7 @@ export default class UserRepository {
 	}
 
 	private static defaultPopulateQuery = {
-		path: 'performedActivities attributes.key',
+		path: 'performedActivities attributes.attribute',
 		select: '-__v'
 	}
 

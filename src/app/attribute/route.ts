@@ -18,5 +18,13 @@ export default function initRouter(): any {
     middleware.createAttribute,
     middleware.returnSuccessResponseWithAttribute);
 
+    /*
+    router.delete('/attributes/:attributeId',
+    authenticate,
+    middleware.deleteAttribute,
+    middleware.returnEmptySuccessResponse
+    );
+    */
+
 	return router;
 }

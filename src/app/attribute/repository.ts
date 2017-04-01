@@ -21,6 +21,39 @@ export default class AttributeRepository {
         });
     }
 
+    /**
+	* Finds a specified user
+	* @param {string} userId - id of user requesting to create a new attribute
+    * @param {IAttribute} attribute - attribute to be created
+	* @param {Function} completion - Function that will execute after the query, called completion(err, attribute)
+	*/
+    public static delete(userId: string, attributeId: string, completion: Function) {
+        //Checks if the user has permission to create attribute
+
+        UserRepository.isAdminAsync(userId, (isAdmin) => {
+            if (!isAdmin) {
+                completion(true);
+            }
+
+            Attribute.findById(attributeId, (err, attribute) => {
+                if (err) {
+                    console.log(err);
+                    return completion(err);
+                }
+
+                attribute.remove( (err) => {
+                    if (err) {
+                        console.log(err);
+                        return completion(err);
+                    }
+
+                    return completion(null);
+                });
+            });
+
+        })
+    }
+
 	/**
 	 * Finds a specified user
 	 * @param {string} userId - id of user requesting to create a new attribute
@@ -29,7 +62,9 @@ export default class AttributeRepository {
 	 */
 	public static create(userId: string, attribute: IAttribute, completion: Function): void {
 
-        //Checks if the user has permission to create attribute
+        
+        
+
 		UserRepository.findById(userId, (err, user) => {
             
             if (err) {
@@ -48,7 +83,6 @@ export default class AttributeRepository {
             .catch( (err) => {
                 return completion(err);
             });
-
-        })
+        });
 	}
 }
