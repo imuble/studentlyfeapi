@@ -21,7 +21,7 @@ export function returnSuccessResponseWithDynamicData(req, res, next) {
 
 export function findUserObject(req, res, next) {
     let userId = req.data.decodedToken.userId;
-    UserRepository.findByIdAndPopulate(userId, "attribute", (err, user) => {
+    UserRepository.findByIdAndPopulate(userId, "attributes", (err, user) => {
         if (err) return res.status(500).send();
         if (!user) return res.status(401).send();
         req.data.user = user;
