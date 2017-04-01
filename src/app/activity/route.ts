@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { IActivity, ActivitySchema } from './model';
 import ActivityRepository from './repository';
+import UserRepository from '../user/repository'
 import authenticate from '../authentication/middleware/authenticate';
 import * as performedActivityMiddleware from '../performed_activity/middleware';
 import * as middleware from './middleware/index';
@@ -25,6 +26,12 @@ export default function initRouter(): any {
     middleware.checkIfActivityIsOnCooldown,
     middleware.performActivityForUser,
     middleware.returnSuccessResponse
+    );
+
+    router.delete('/activities/:activityId',
+        authenticate,
+        middleware.deleteActivityByIdIfAdmin,
+        middleware.returnSuccessResponse
     );
 
 

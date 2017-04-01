@@ -139,6 +139,21 @@ export function performActivityForUser(req, res, next) {
 
     });
 }
+
+export function deleteActivityByIdIfAdmin(req, res, next) {
+    let activityId = req.params.activityId;
+    let userId = req.data.decodedToken.userId;
+    ActivityRepository.deleteActivity(activityId, userId, (err, deletedActivity) => {
+        if (err == "404") return res.status(404).send();
+        if (err == "403") return res.status(403).send();
+        if (err) return res.status(500).json({message: "Error when deleting activity"});
+        else {
+            req.data.deletedActivity = deletedActivity;
+            next();
+        }
+    });
+}
+
 /* perform activity end */
 
 export function returnSuccessResponse(req, res, next) {
