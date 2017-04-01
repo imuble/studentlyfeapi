@@ -10,6 +10,7 @@ import * as ActivityEffectFolder from './activity_effect'
 import * as DynamicDataFolder from './dynamic_data'
 import AttributeFolder from './attribute';
 import PerformedActivitiesRoute from './performed_activity/route';
+import * as RankFolder from './rank';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -42,6 +43,7 @@ public express: express.Application;
 		this.express.use('/', PerformedActivitiesRoute());
 		this.express.use('/', ActivityEffectFolder.default.route());
 		this.express.use('/', DynamicDataFolder.default.route());
+		this.express.use('/', RankFolder.default.route());
 	}
 }
 

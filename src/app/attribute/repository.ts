@@ -24,7 +24,7 @@ export default class AttributeRepository {
     /**
 	* Finds a specified user
 	* @param {string} userId - id of user requesting to create a new attribute
-    * @param {IAttribute} attribute - attribute to be created
+    * @param {IAttribute}  - attribute to be created
 	* @param {Function} completion - Function that will execute after the query, called completion(err, attribute)
 	*/
     public static delete(userId: string, attributeId: string, completion: Function) {
