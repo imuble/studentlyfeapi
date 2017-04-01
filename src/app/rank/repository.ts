@@ -35,4 +35,14 @@ export default class RankRepository {
         });
     }
 
+    public static delete(userId: string, rankId: string, completion: Function): void {
+        UserRepository.isAdminAsync(userId, (admin) => {
+            if (!admin) return completion("403");
+            Rank.findByIdAndRemove(rankId, (err, deletedRank) => {
+                if (err) completion("500");
+                else if (!deletedRank)  completion("404");
+                else completion(null, deletedRank);
+            });
+        });
+    }
 }

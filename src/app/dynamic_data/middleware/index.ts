@@ -6,6 +6,7 @@ export function returnSuccessResponseWithDynamicData(req, res, next) {
     let activities = req.data.activities;
     let attributes = req.data.attributes;
     let user = req.data.user;
+    let ranks = req.data.ranks;
 
     return res.status(200).json(
         {
@@ -13,6 +14,7 @@ export function returnSuccessResponseWithDynamicData(req, res, next) {
                 {
                     activities: activities,
                     attributes: attributes,
+                    ranks: ranks,
                     user: user,
                 }
 
