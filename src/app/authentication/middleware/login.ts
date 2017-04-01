@@ -56,6 +56,16 @@ export function fetchUserFromFacebook(req, res, next) {
     });
 }
 
+export function addAllDefaultAttributesToUser (req, res, next) {
+    let user = req.data.thisUser._id;
+
+    UserRepository.setAllDefaultAttributesForUser(user, (err, updatedUser) => {
+        console.log(err);
+        console.log(updatedUser);
+        return next();
+    });
+}
+
 export function returnSuccessWithTokens (req, res, next) {
 
     let tokens = req.data.signedTokens;

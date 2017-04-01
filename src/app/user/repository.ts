@@ -3,7 +3,7 @@ import PerformedActivity from '../performed_activity/model';
 import { IUser } from './model';
 import { IPerformedActivity } from '../performed_activity/model';
 import { IAttribute } from '../attribute/model';
-
+import AttributeModel from '../attribute/model';
 export default class UserRepository {
 	constructor() {
 	}
@@ -26,6 +26,43 @@ export default class UserRepository {
 
 	public static addAttributeToAllUsers(attributeId: string, defaultValue: number = 0, completion: Function) {
 		User.update({}, { $push: { attributes: { attribute: attributeId, value: defaultValue } } }, { multi: true }).exec(completion);
+	}
+
+	public static setPushToken(userId: string, token: string, completion: Function) {
+		User.findByIdAndUpdate(userId, {$set: {pushToken: token}}, completion);
+	}
+
+	public static setAllDefaultAttributesForUser (userId: string, completion: Function) {
+		AttributeModel.find({}).then( (attributes) => {
+			let attributeList = [];
+			attributes.forEach ( (attr) => {
+				attributeList.push( {
+					attribute: attr._id,
+					value: attr.defaultValue || 0
+				});
+			}) ;
+			User.findByIdAndUpdate(userId, {$pushAll: {attributes: attributeList}}, {new: true}).then( (updatedUser) => {
+				completion(null, updatedUser);
+			});
+		}).catch( (err) => {
+			completion(err);
+		});
+	}
+
+	public static getAllPushTokens(completion) {
+		let tokens = [];
+
+		User.find({}, (err, users) => {
+			if (err) {
+				return completion(err);
+			}
+			users.forEach( (user) => {
+				if (user.pushToken) {
+					tokens.push(user.pushToken);
+				}
+			});
+			completion(null, tokens);
+		});
 	}
 
 	public static pushPerformedActivity(userId: string, performedActivity: IPerformedActivity, completion: Function): void {
