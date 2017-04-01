@@ -9,7 +9,6 @@ export default function initRouter(): any {
 	router.post('/login',
 	middleware.validateInput,
 	middleware.fetchUserFromFacebook,
-	middleware.addAllDefaultAttributesToUser,
 	signToken,
 	middleware.returnSuccessWithTokens
 	);

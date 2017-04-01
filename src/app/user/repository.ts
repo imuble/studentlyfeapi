@@ -135,7 +135,12 @@ export default class UserRepository {
 	public static create(user: IUser, completion?: Function): void {
 		let newUser = new User(user);
 		newUser.isAdmin = true;
-		return newUser.save(completion);
+		newUser.save( (err, user) => {
+			if (err) {
+				return completion(err);
+			}
+			UserRepository.setAllDefaultAttributesForUser(user._id, completion);
+		});
 	}
 
 	public static isAdminAsync(userId: string, completion: Function) {
