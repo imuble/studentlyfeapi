@@ -23,6 +23,12 @@ export default function initRouter(): any {
         middleware.returnSuccessResponseWithCreatedRank
     );
 
+    router.delete('/ranks/:id',
+        authenticate,
+        middleware.deleteRank,
+        middleware.returnSuccessResponseWithDeletedRank
+    );
+
 
 
     return router;
