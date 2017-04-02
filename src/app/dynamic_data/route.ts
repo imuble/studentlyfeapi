@@ -9,6 +9,7 @@ import * as activityMiddleware from '../activity/middleware/index';
 import * as attributeMiddleware from '../attribute/middleware/index';
 import * as rankMiddleware from '../rank/middleware/index';
 import * as middleware from './middleware';
+import * as performedActivityMiddleware from '../performed_activity/middleware';
 
 
 
@@ -19,6 +20,7 @@ export default function initRouter(): any {
         authenticate,
         activityMiddleware.findAllActivities,
         attributeMiddleware.findAllAttributes,
+        performedActivityMiddleware.cleanPerformedActivities,
         rankMiddleware.findAllRanks,
         middleware.findUserObject,
         middleware.returnSuccessResponseWithDynamicData

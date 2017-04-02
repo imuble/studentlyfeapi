@@ -3,12 +3,11 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
-import * as UserFolder from './user';
-import * as AuthenticationFolder from './authentication';
-import * as ActivityFolder from './activity'
-import * as ActivityEffectFolder from './activity_effect'
-import * as DynamicDataFolder from './dynamic_data'
-import AttributeFolder from './attribute';
+import UserRoute from './user/route';
+import AuthenticationRoute from './authentication/route';
+import ActivityRoute from './activity/route'
+import DynamicDataRoute from './dynamic_data/route'
+import AttributeRoute from './attribute/route';
 import PerformedActivitiesRoute from './performed_activity/route';
 import * as RankFolder from './rank';
 
@@ -36,13 +35,12 @@ public express: express.Application;
 
   // Configure API endpoints.
 	private routes(): void {
-		this.express.use('/', UserFolder.default.route());
-		this.express.use('/', AuthenticationFolder.default.route());
-		this.express.use('/', ActivityFolder.default.route());
-		this.express.use('/', AttributeFolder.route());
+		this.express.use('/', UserRoute());
+		this.express.use('/', AuthenticationRoute());
+		this.express.use('/', ActivityRoute());
+		this.express.use('/', AttributeRoute());
 		this.express.use('/', PerformedActivitiesRoute());
-		this.express.use('/', ActivityEffectFolder.default.route());
-		this.express.use('/', DynamicDataFolder.default.route());
+		this.express.use('/', DynamicDataRoute());
 		this.express.use('/', RankFolder.default.route());
 	}
 }
