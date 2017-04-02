@@ -20,6 +20,7 @@ export default function initRouter(): any {
     router.post('/ranks',
         authenticate,
         middleware.createRank,
+        middleware.sendNewRankPushNotification,
         middleware.returnSuccessResponseWithCreatedRank
     );
 

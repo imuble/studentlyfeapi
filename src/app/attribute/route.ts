@@ -16,6 +16,7 @@ export default function initRouter(): any {
     router.post('/attributes',
     authenticate,
     middleware.createAttribute,
+    middleware.sendNewAttributePushNotification,
     middleware.returnSuccessResponseWithAttribute);
 
     /*

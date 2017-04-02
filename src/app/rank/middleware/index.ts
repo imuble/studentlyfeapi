@@ -2,6 +2,7 @@
 import UserRepository from '../../user/repository';
 import RankRepository from '../repository'
 import UserSchema from '../../user/model';
+import * as PushNotifications from '../../../lib/push_notiication';
 
 export function findAllRanks(req, res, next) {
     RankRepository.findAll( (err, ranks) => {
@@ -19,6 +20,31 @@ export function returnSuccessResponseWithRanks(req, res, next) {
         return res.json(
             {ranks: req.data.ranks}
         );
+}
+
+export function sendNewRankPushNotification (req, res, next) {
+
+    let attribute = req.data.rank;
+    
+    let push: PushNotifications.PushNotification = {
+        payload: {
+            event: 'added',
+            entity: 'rank'
+        },
+        provider: 'gcm'
+    }
+    UserRepository.getAllPushTokens( (err, tokens) => {
+        if (err) {
+            return res.status(500).send("could not get pushtokens");
+        }
+        PushNotifications.sendPushNotification(tokens, push).then( (response) => {
+            console.log(response);
+            return next();
+        }).catch( (err) => {
+            console.log(err);
+            return res.status(500).send("could not send push");
+        });
+    });
 }
 
 export function createRank(req, res, next) {

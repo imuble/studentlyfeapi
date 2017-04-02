@@ -2,6 +2,7 @@
 import AttributeRepository from '../repository';
 import UserRepository from '../../user/repository';
 import UserSchema from '../../user/model';
+import * as PushNotifications from '../../../lib/push_notiication';
 
 export function findAllAttributes(req, res, next) {
     AttributeRepository.findAll( (err, attributes) => {
@@ -28,6 +29,31 @@ export function returnSuccessResponseWithAttribute (req, res, next) {
 
 export function returnEmptySuccessResponse (req, res, next) {
     return res.status(200).send();
+}
+
+export function sendNewAttributePushNotification (req, res, next) {
+
+    let attribute = req.data.attribute;
+    
+    let push: PushNotifications.PushNotification = {
+        payload: {
+            event: 'added',
+            entity: 'attribute'
+        },
+        provider: 'gcm'
+    }
+    UserRepository.getAllPushTokens( (err, tokens) => {
+        if (err) {
+            return res.status(500).send("could not get pushtokens");
+        }
+        PushNotifications.sendPushNotification(tokens, push).then( (response) => {
+            console.log(response);
+            return next();
+        }).catch( (err) => {
+            console.log(err);
+            return res.status(500).send("could not send push");
+        });
+    });
 }
 
 export function deleteAttribute(req, res, next) {
