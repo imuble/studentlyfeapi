@@ -20,8 +20,9 @@ export default function initRouter(): any {
         authenticate,
         activityMiddleware.findAllActivities,
         attributeMiddleware.findAllAttributes,
-        performedActivityMiddleware.cleanPerformedActivities,
         rankMiddleware.findAllRanks,
+        performedActivityMiddleware.findAllPerformedActivitiesForUser,
+        performedActivityMiddleware.cleanPerformedActivities,
         middleware.findUserObject,
         middleware.returnSuccessResponseWithDynamicData
     );
