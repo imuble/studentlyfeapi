@@ -5,14 +5,16 @@ export interface IAttribute extends mongoose.Document {
     name: string,
     suffix?: string,
     description: string,
-    defaultValue?: Number
+    defaultValue?: Number,
+    imageUrl: string
 };
 
 export const AttributeSchema = new mongoose.Schema({
     name: {type:String, required: true, index: true},
     description: {type: String, required: true},
     suffix: {type:String},
-    defaultValue: {type: Number, default: 0}
+    defaultValue: {type: Number, default: 0},
+    imageUrl: {type: String}
 });
 
 AttributeSchema.pre('remove', function (next) {
