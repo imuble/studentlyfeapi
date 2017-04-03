@@ -18,6 +18,7 @@ export interface IActivity extends mongoose.Document {
     successFactors?: [{ attribute: { type: string }, value: Number }],
     cooldown: Number,
     imageUrl?: string,
+    description: string
 };
 
 export const ActivitySchema = new mongoose.Schema({
@@ -26,7 +27,8 @@ export const ActivitySchema = new mongoose.Schema({
     targetEffects: [activityEffect],
     successFactors: [{ attribute: { type: mongoose.Schema.Types.ObjectId, ref: 'Attribute' }, value: Number }],
     cooldown: { type: Number, required: true },
-    imageUrl: { type: String }
+    imageUrl: { type: String },
+    description: { type: String, required: true}
 });
 
 

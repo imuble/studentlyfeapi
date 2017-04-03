@@ -22,11 +22,11 @@ export default function initRouter(): any {
     );
 
     router.post('/activities/:activityId/invoke',
-    authenticate,
-    performedActivityMiddleware.findAllPerformedActivitiesForUser,
-    middleware.checkIfActivityIsOnCooldown,
-    middleware.performActivityForUser,
-    middleware.returnSuccessResponse
+        authenticate,
+        performedActivityMiddleware.findAllPerformedActivitiesForUser,
+        middleware.checkIfActivityIsOnCooldown,
+        middleware.performActivityForUser,
+        middleware.returnSuccessResponse
     );
 
     router.delete('/activities/:activityId',
