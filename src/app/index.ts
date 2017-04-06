@@ -9,6 +9,7 @@ import ActivityRoute from './activity/route'
 import DynamicDataRoute from './dynamic_data/route'
 import AttributeRoute from './attribute/route';
 import PerformedActivitiesRoute from './performed_activity/route';
+import GroupRoute from './group/route';
 import * as RankFolder from './rank';
 
 // Creates and configures an ExpressJS web server.
@@ -41,6 +42,7 @@ public express: express.Application;
 		this.express.use('/', AttributeRoute());
 		this.express.use('/', PerformedActivitiesRoute());
 		this.express.use('/', DynamicDataRoute());
+		this.express.use('/', GroupRoute());
 		this.express.use('/', RankFolder.default.route());
 	}
 }

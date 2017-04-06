@@ -9,7 +9,7 @@ export default class UserRepository {
 	}
 
 	private static defaultPopulateQuery = {
-		path: 'performedActivities attributes.attribute',
+		path: 'performedActivities attributes.attribute groups',
 		select: '-__v'
 	}
 
@@ -156,5 +156,9 @@ export default class UserRepository {
 
 			return completion(true);
 		});
+	}
+
+	public static addGroupToUser(groupId: string, completion: Function) {
+		User.update({}, { $push: { groups: groupId } }, { multi: true }).exec(completion);
 	}
 }

@@ -7,6 +7,7 @@ export interface IUser extends mongoose.Document {
 	isAdmin?: Boolean,
 	attributes?: [{attribute: String, value: number}],
 	performedActivities?: [{type: mongoose.Schema.Types.ObjectId}],
+	groups?: [{type: mongoose.Schema.Types.ObjectId}],
 	imageUrl?: string
 };
 
@@ -17,7 +18,8 @@ export const UserSchema = new mongoose.Schema({
 	isAdmin: {type:Boolean, default:false},
 	attributes: [{attribute: {type: mongoose.Schema.Types.ObjectId, ref: 'Attribute'}, value: {type: Number}}],
 	performedActivities: [{type: mongoose.Schema.Types.ObjectId, ref: "PerformedActivity"}],
-	imageUrl: {type: String}
+	imageUrl: {type: String},
+	groups: [{type: mongoose.Schema.Types.ObjectId, ref: "Group"}],
 });
 
 const User = mongoose.model<IUser>('User', UserSchema)

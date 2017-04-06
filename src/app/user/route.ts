@@ -8,23 +8,27 @@ let userRepo = new UserRepository();
 export default function initRouter(): any {
 	let router = express.Router();
 
-	router.get('/user/:userId', (req: any, res: any) => {
+	router.get('/group/:groupId',
+		(req: any, res: any) => {
 
-		let userId = req.params.userId;
+		let groupId = req.params.userId;
 
-		if (!userId) {
-			return res.status()
+		if (!groupId) {
+			return res.status(404).json({message: "Group with given id not found"})
 		}
-
-		//let user: UserSchema = userRepo.findById(userId);
 
 		return res.status(200);
 	});
 
-	router.put('/me/pushtoken',
-	authenticate,
-	PutUserPushTokenMiddleware.verifyPutUserPushTokenBody,
-	PutUserPushTokenMiddleware.setAuthenticatedUsersPushToken
+	router.post('/groups',
+		authenticate,
+
+	)
+
+	router.get('/me/groups',
+		authenticate,
+		PutUserPushTokenMiddleware.verifyPutUserPushTokenBody,
+		PutUserPushTokenMiddleware.setAuthenticatedUsersPushToken
 	);
 
 	return router;
