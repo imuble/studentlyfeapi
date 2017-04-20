@@ -22,8 +22,13 @@ export default function initRouter(): any {
 
 	router.post('/user',
 		authenticate,
-
 	)
+
+	router.put('/me/pushtoken',
+		authenticate,
+		PutUserPushTokenMiddleware.verifyPutUserPushTokenBody,
+		PutUserPushTokenMiddleware.setAuthenticatedUsersPushToken
+	);
 
 	router.get('/me/groups',
 		authenticate,
