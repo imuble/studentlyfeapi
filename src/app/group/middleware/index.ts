@@ -21,7 +21,7 @@ export function createGroup(req, res, next) {
             console.log(err);
             return res.status(500).send();
         }
-        UserRepository.addGroupToUser(group._id, (err) => {
+        UserRepository.addGroupToUser(group._id, userId, (err) => {
             if (err) {
                 console.log(err);
             }

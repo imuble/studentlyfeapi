@@ -16,14 +16,5 @@ export default function initRouter(): any {
         middleware.returnSuccessWithCreatedGroup
     );
 
-    router.post('/groups/:groupId/members',
-        authenticate
-    );
-
-    router.delete('/groups/:groupId/members',
-        authenticate
-    );
-
-
     return router;
 }

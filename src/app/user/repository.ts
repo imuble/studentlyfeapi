@@ -158,7 +158,7 @@ export default class UserRepository {
 		});
 	}
 
-	public static addGroupToUser(groupId: string, completion: Function) {
-		User.update({}, { $push: { groups: groupId } }, { multi: true }).exec(completion);
+	public static addGroupToUser(groupId: string, userId: string, completion: Function) {
+		User.update({_id: userId}, { $push: { groups: groupId } }, { multi: true }).exec(completion);
 	}
 }

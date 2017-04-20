@@ -8,19 +8,19 @@ let userRepo = new UserRepository();
 export default function initRouter(): any {
 	let router = express.Router();
 
-	router.get('/group/:groupId',
+	router.get('/user/:userId',
 		(req: any, res: any) => {
 
-		let groupId = req.params.userId;
+		let userId = req.params.userId;
 
-		if (!groupId) {
-			return res.status(404).json({message: "Group with given id not found"})
+		if (!userId) {
+			return res.status(404).json({message: "User with given id not found"})
 		}
 
 		return res.status(200);
 	});
 
-	router.post('/groups',
+	router.post('/user',
 		authenticate,
 
 	)

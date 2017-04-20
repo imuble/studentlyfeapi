@@ -39,14 +39,14 @@ export default class ActivityRepository {
     /**
      * Create group
      * @param {IGroup} group - group object to save
-     * @param (userId) string - id of the user doing the create request
+     * @param (creatorId) string - id of the user doing the create request
      * @param {Function} completion - Function that will execute after the query, called completion(err, group)
      */
-    public static create(group: IGroup, userId: string, completion: Function): void {
+    public static create(group: IGroup, creatorId: string, completion: Function): void {
         let newGroup = new Group(group);
-        newGroup.members.push(userId);
-        newGroup.admins.push(userId);
-        newGroup.owner = userId;
+        newGroup.members.push(creatorId);
+        newGroup.admins.push(creatorId);
+        newGroup.owner = creatorId;
         newGroup.save()
             .then((savedGroup) => {
                 completion(null, savedGroup);
