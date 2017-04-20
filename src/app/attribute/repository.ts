@@ -61,10 +61,6 @@ export default class AttributeRepository {
 	 * @param {Function} completion - Function that will execute after the query, called completion(err, attribute)
 	 */
 	public static create(userId: string, attribute: IAttribute, completion: Function): void {
-
-        
-        
-
 		UserRepository.findById(userId, (err, user) => {
             
             if (err) {
