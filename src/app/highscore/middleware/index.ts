@@ -27,7 +27,7 @@ export function findAllUsersAndGenerateHighscoreLists(req, res, next) {
 
             users.forEach( (user) => {
                 user.attributes.forEach( (object) => {
-                    highscores[object.attribute.name].push({name: user.name, score: object.value});
+                    highscores[object.attribute.name].push({name: user.name, fbId: user.fbId, score: object.value});
                 });
             });
 
@@ -37,7 +37,7 @@ export function findAllUsersAndGenerateHighscoreLists(req, res, next) {
                 highscores[key] = highscores[key].slice(0,numOfElements);
             }
 
-            req.data.highscores = highscores;
+            req.data.highscores = [highscores];
             next();
     });
 }
