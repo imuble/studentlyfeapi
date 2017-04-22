@@ -65,6 +65,23 @@ export default class UserRepository {
 		});
 	}
 
+	public static getAllUsers(completion) {
+		var removeFields = {
+			__v: false,
+			pushToken: false,
+			isAdmin: false,
+			attributes: false,
+			performedActivities: false,
+			imageUrl: false,
+			groups: false
+		};
+
+		User.find({}, removeFields, function (err, users) {
+			if (err) return completion(err);
+			return completion(null,users);
+		});
+	}
+
 	public static pushPerformedActivity(userId: string, performedActivity: IPerformedActivity, completion: Function): void {
 		let newPerformedActivity = new PerformedActivity(performedActivity);
 		newPerformedActivity.save((err, savedPerformedActivity) => {

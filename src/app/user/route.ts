@@ -3,10 +3,17 @@ import { IUser, UserSchema } from './model';
 import UserRepository from './repository';
 import authenticate from '../authentication/middleware/authenticate';
 import * as PutUserPushTokenMiddleware from './middleware/put_user_pushtoken';
+import * as Middleware from './middleware/userMiddleware';
 let userRepo = new UserRepository();
 
 export default function initRouter(): any {
 	let router = express.Router();
+
+
+	router.get('/users',
+		Middleware.getAllUsers,
+		Middleware.returnSuccessWithAllUsers
+	);
 
 	router.get('/user/:userId',
 		(req: any, res: any) => {
@@ -19,10 +26,6 @@ export default function initRouter(): any {
 
 		return res.status(200);
 	});
-
-	router.post('/user',
-		authenticate,
-	)
 
 	router.put('/me/pushtoken',
 		authenticate,
