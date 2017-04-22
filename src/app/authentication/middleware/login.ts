@@ -36,8 +36,10 @@ export function fetchUserFromFacebook(req, res, next) {
 
             getFbUserById(data.id, (data) => {
                 let newUser: IUser = {
-                    fbId: data.id
+                    fbId: data.id,
+                    name: data.name
                 };
+                console.error("Name:" + data.name);
                 UserRepository.create(newUser, (err, user) => {
                     if (err) {
                         console.log(err);

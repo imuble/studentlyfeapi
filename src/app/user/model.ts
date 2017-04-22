@@ -2,7 +2,7 @@ import mongoose = require('mongoose');
 import AttributeSchema from "../attribute/model";
 
 export interface IUser extends mongoose.Document {
-	name?: string,
+	name: string,
 	fbId: string,
 	isAdmin?: Boolean,
 	attributes?: [{attribute: String, value: number}],
@@ -12,7 +12,7 @@ export interface IUser extends mongoose.Document {
 };
 
 export const UserSchema = new mongoose.Schema({
-	name: {type:String},
+	name: {type:String,required: true},
 	fbId: {type:String, required: true},
 	pushToken: {type: String},
 	isAdmin: {type:Boolean, default:false},
