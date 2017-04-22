@@ -31,13 +31,16 @@ export function findAllUsersAndGenerateHighscoreLists(req, res, next) {
                 });
             });
 
+            let finalHighscores = [];
+
             //Sorts each individual highscore list, and
             for (var key in highscores) {
                 highscores[key].sort(function(a, b){return b.score -a.score});
                 highscores[key] = highscores[key].slice(0,numOfElements);
+                finalHighscores.push({attribute: key, scores: highscores[key]});
             }
-
-            req.data.highscores = [highscores];
+            
+            req.data.highscores = finalHighscores;
             next();
     });
 }
