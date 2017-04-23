@@ -66,17 +66,12 @@ export default class UserRepository {
 	}
 
 	public static getAllUsers(completion) {
-		var removeFields = {
-			__v: false,
-			pushToken: false,
-			isAdmin: false,
-			attributes: false,
-			performedActivities: false,
-			imageUrl: false,
-			groups: false
+		var populateQuery = {
+			path: 'performedActivities attributes.attribute groups',
+			select: '-__v'
 		};
 
-		User.find({}, removeFields, function (err, users) {
+		User.find({}).populate(populateQuery).exec((err, users) => {
 			if (err) return completion(err);
 			return completion(null,users);
 		});
