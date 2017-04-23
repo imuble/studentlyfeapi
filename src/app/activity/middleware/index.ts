@@ -112,6 +112,10 @@ export async function performActivityForUser(req, res, next) {
 
     ActivityRepository.findById(activityId, (err, activity) => {
 
+        if (!activity) {
+            return res.status(404).send({code: 69, message: "The specified activity does not exist"});
+        }
+
         if (activity.targetEffects && activity.targetEffects.length === 0 && targetId) {
             return res.status(422).json({ message: "TargetEffects length is 0, but there is a target" });
         }
