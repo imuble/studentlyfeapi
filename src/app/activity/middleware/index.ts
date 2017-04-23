@@ -15,10 +15,10 @@ export function findAllActivities(req, res, next) {
     });
 }
 
-export function sendNewActivityPushNotification (req, res, next) {
+export function sendNewActivityPushNotification(req, res, next) {
 
     let activity = req.data.activity;
-    
+
     let push: PushNotifications.PushNotification = {
         payload: {
             event: 'added',
@@ -26,14 +26,14 @@ export function sendNewActivityPushNotification (req, res, next) {
         },
         provider: 'gcm'
     }
-    UserRepository.getAllPushTokens( (err, tokens) => {
+    UserRepository.getAllPushTokens((err, tokens) => {
         if (err) {
             return res.status(500).send("could not get pushtokens");
         }
-        PushNotifications.sendPushNotification(tokens, push).then( (response) => {
+        PushNotifications.sendPushNotification(tokens, push).then((response) => {
             console.log(response);
             return next();
-        }).catch( (err) => {
+        }).catch((err) => {
             console.log(err);
             return res.status(500).send("could not send push");
         });
@@ -52,7 +52,7 @@ export function createActivityIfAdmin(req, res, next) {
         if (err) {
             console.log(err);
             return res.status(500).send();
-        }  
+        }
         if (!user || !user.isAdmin) return res.status(401).send();
         let activity = req.body.activity;
         ActivityRepository.create(activity, userId, (err, activity) => {
@@ -96,19 +96,25 @@ export function checkIfActivityIsOnCooldown(req, res, next) {
     }
 
     if (isOnCooldown) {
-        return res.status(412).json("The activity is on cooldown");
+        return res.status(412).json({ isOnCooldown: true, attributesThatFailed: [] });
     }
 
     next();
 
 }
 
-export function performActivityForUser(req, res, next) {
+export async function performActivityForUser(req, res, next) {
     let activityId = req.params.activityId;
     let userId = req.data.decodedToken.userId;
     let targetId = req.body.targetId;
 
+    let user = await UserRepository.findByIdAndPopulate(userId);
+
     ActivityRepository.findById(activityId, (err, activity) => {
+
+        if (!activity) {
+            return res.status(404).send({code: 69, message: "The specified activity does not exist"});
+        }
 
         if (activity.targetEffects && activity.targetEffects.length === 0 && targetId) {
             return res.status(422).json({ message: "TargetEffects length is 0, but there is a target" });
@@ -122,9 +128,26 @@ export function performActivityForUser(req, res, next) {
             readyAt: new Date().getTime() + activity.cooldown
         };
 
+        let attributes = [];
+        user.attributes.forEach((attribute) => {
+            for (let i = 0; i < activity.selfEffects.length; i++) {
+                let effect = activity.selfEffects[i];
+                if (new String(effect.attribute).valueOf() === new String(attribute.attribute._id).valueOf()) {
+                    if (attribute.value + effect.change < 0) {
+                        attributes.push(attribute.attribute.name);
+                    }
+                    return;
+                }
+            }
+        });
+
+        if (attributes.length > 0) {
+            return res.status(412).send({isOnCooldown: false, attributesThatFailed: attributes});
+        }
+
         UserRepository.pushPerformedActivity(userId, performedActivity, (err) => {
             if (err) {
-                return res.status(500).json({message: "Error when pushing performedActivity"});
+                return res.status(500).json({ message: "Error when pushing performedActivity" });
             }
             /*TODO evaluate success, now always success*/
             let promises = [];
@@ -160,8 +183,6 @@ export function performActivityForUser(req, res, next) {
                     return next();
                 });
         });
-
-
     });
 }
 
@@ -171,7 +192,7 @@ export function deleteActivityByIdIfAdmin(req, res, next) {
     ActivityRepository.deleteActivity(activityId, userId, (err, deletedActivity) => {
         if (err == "404") return res.status(404).send();
         if (err == "403") return res.status(403).send();
-        if (err) return res.status(500).json({message: "Error when deleting activity"});
+        if (err) return res.status(500).json({ message: "Error when deleting activity" });
         else {
             req.data.deletedActivity = deletedActivity;
             next();
