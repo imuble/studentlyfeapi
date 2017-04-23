@@ -39,7 +39,7 @@ export function findAllUsersAndGenerateHighscoreLists(req, res, next) {
                 highscores[key] = highscores[key].slice(0,numOfElements);
                 finalHighscores.push({attribute: key, scores: highscores[key]});
             }
-            
+
             req.data.highscores = finalHighscores;
             next();
     });
